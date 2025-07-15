@@ -13,9 +13,15 @@ export default function Products (){
 
     const insertProduct= (index) => {
         const newCartProduct = products[index];
-        const isAlreadyinCart = addedProducts.some(prod => prod.name === newCartProduct.name)
-        if(isAlreadyinCart){
-            return
+        const alreadyProduct = addedProducts.find(prod => prod.name === newCartProduct.name);
+        const newProductsArray = alreadyProduct && addedProducts.map(prod=> {
+                if(prod.name === alreadyProduct.name){
+                    return {...prod, quantity: prod.quantity +1}
+                }
+                return prod;
+            })
+        if(alreadyProduct){
+             setAddedProducts(newProductsArray)
         }else {
             setAddedProducts(prev=> {
                 return [...prev, {...newCartProduct, quantity: 1}]
@@ -41,32 +47,8 @@ export default function Products (){
     </div>
 }
 
-// 📌 Milestone 2: Aggiungere prodotti al carrello
-// ✅ Obiettivo
-// L’utente può aggiungere prodotti al carrello e vedere una lista dei prodotti aggiunti.
 
-// 📥 Stato
-// Creare uno stato addedProducts (array vuoto all’inizio).
-// 🧠 Logica
-// Ogni prodotto ha un bottone "Aggiungi al carrello".
-// Al click:
-// Se il prodotto non è già nel carrello, aggiungilo con quantity = 1.
-// Se il prodotto è già presente, ignora l’azione.
-// Mostrare la lista del carrello solo se ci sono elementi.
-// 🧾 Visualizzazione carrello
-// Per ogni prodotto aggiunto:
 
-// Nome
-// Prezzo
-// Quantità
-// 📌 Milestone 3: Modificare il carrello
-// ✅ Obiettivo
-// Gestire dinamicamente l’aggiunta, rimozione e aggiornamento del carrello.
-
-// 🔁 Nuova logica
-// Se l’utente clicca di nuovo su "Aggiungi al carrello":
-
-// Aumenta quantity usando la funzione updateProductQuantity.
 // Aggiungi un bottone "Rimuovi dal carrello":
 
 // Usa la funzione removeFromCart.
