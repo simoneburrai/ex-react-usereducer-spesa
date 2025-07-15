@@ -10,6 +10,9 @@ const products = [
 export default function Products (){
 
     const [addedProducts, setAddedProducts] = useState([]);
+    const cartPrice = addedProducts.reduce((acc, product) => {
+        return product.price * product.quantity + acc
+    }, 0)
 
     const insertProduct= (index) => {
         const newCartProduct = products[index];
@@ -28,6 +31,17 @@ export default function Products (){
             })
         }
     }
+
+    const removeProduct = (index)=> {
+        const currentProduct = products[index];
+        const productInCart = addedProducts.find(prod => prod.name === currentProduct.name);
+        if(productInCart){
+            const updatedProducts = addedProducts.filter(prod => prod.name !== productInCart.name);
+            setAddedProducts(updatedProducts);
+        }else {
+            return;
+        }
+    }
     console.log(addedProducts)
 
     return <div className="products">
@@ -36,6 +50,7 @@ export default function Products (){
             <h3>{prod.name}</h3>
             <strong>{prod.price} €</strong>
             <button onClick={()=>insertProduct(index)}>Aggiungi al Carrello</button>
+            <button onClick={()=>removeProduct(index)}>Rimuovi dal Carrello</button>
         </div>)}
         {addedProducts.length > 0 && <div>
             {addedProducts.map((product, index)=><div key={index}>
@@ -43,13 +58,13 @@ export default function Products (){
                 <h4>PRICE: {product.price}</h4>
                 <h5>QUANTITY: {product.quantity}</h5>
             </div>)}
+            <h3>TOTAL PRICE: € {cartPrice.toFixed(2)}</h3>
         </div> }
     </div>
 }
 
 
 
-// Aggiungi un bottone "Rimuovi dal carrello":
 
 // Usa la funzione removeFromCart.
 // 💰 Calcolo totale
